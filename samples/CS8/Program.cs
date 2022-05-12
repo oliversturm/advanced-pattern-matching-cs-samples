@@ -5,7 +5,7 @@
     {
       1 => 2,
       2 => 3,
-      _ => throw new ArgumentException("Weiter geht's nicht")
+      _ => throw new ArgumentException("Rien ne va plus")
     };
 
     // Property Pattern:
@@ -34,7 +34,7 @@
         Address = new Address { City = "Castle Douglas", Country = "UK" }
       };
       if (customer is { Address: { City: "Castle Douglas" } }) {
-        Console.WriteLine("Dieser Kunde wohnt gleich um die Ecke");
+        Console.WriteLine("This customer lives around the corner");
       }
     }
   }

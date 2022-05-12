@@ -20,6 +20,13 @@
       }
     }
 
+    public enum OrderValue {
+      ValuableDueToHighCount,
+      ValuableDueToHighItemPrice,
+      ValuableDueToHighTotal,
+      NotValuable,
+    }
+
     // Positional patterns with placeholders - note that
     //   the element lists must be "complete"!
     static OrderValue OrderValueCategory(Order o) =>

@@ -18,7 +18,7 @@
         Address = new Address { City = "Castle Douglas", Country = "UK" }
       };
       if (customer is { Address.City: "Castle Douglas" }) {
-        Console.WriteLine("Dieser Kunde wohnt gleich um die Ecke");
+        Console.WriteLine("This customer lives around the corner");
       }
     }
   }
