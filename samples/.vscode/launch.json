@@ -11,7 +11,7 @@
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
       //"program": "${workspaceFolder}/NewRecordWith/bin/Debug/net6.0/NewRecordWith.dll",
-      "program": "${fileDirname}/bin/Debug/net6.0/${relativeFileDirname}.dll",
+      "program": "${fileDirname}/bin/Debug/net7.0/${relativeFileDirname}.dll",
       "args": [],
       "cwd": "${fileDirname}",
       //"cwd": "${workspaceFolder}/NewRecordWith",
