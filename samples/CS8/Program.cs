@@ -22,11 +22,15 @@
     }
 
     static void Main(string[] args) {
-      // Positional pattern (using a tuple - hence "tuple pattern")
-      // Important: this works with any deconstructable type!
+      // This is a tuple, supported since C# 7
       (string, string) personInfo = ("Oli", "Sturm");
       var (firstName, lastName) = personInfo;
       // firstName ist jetzt "Oli" und lastName ist "Sturm"
+
+      // Positional pattern (using a tuple - hence "tuple pattern" in this special case)
+      // Important: this works with any deconstructable type! Example coming up in CS9 sample.
+      if (personInfo is ("Oli", var olisLastName))
+        Console.WriteLine($"Found Oli, his last name is {olisLastName}.");
 
       // Nested property patterns:
       var customer = new Customer
