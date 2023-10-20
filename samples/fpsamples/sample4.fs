@@ -1,4 +1,4 @@
-// In F# the keywoard `match` can be used to run an 
+// In F# the keyword `match` can be used to run an
 // explicit pattern match. 
 
 let rec listLength l = 

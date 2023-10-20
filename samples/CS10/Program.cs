@@ -1,4 +1,6 @@
-﻿namespace CS10 {
+﻿// ReSharper disable All
+
+namespace CS10 {
   class Program {
     // Nested types, just like the C# 8 sample:
     public class Address {
@@ -13,10 +15,7 @@
 
     static void Main(string[] args) {
       // Nested property patterns, now shorter:
-      var customer = new Customer
-      {
-        Address = new Address { City = "Castle Douglas", Country = "UK" }
-      };
+      var customer = new Customer { Address = new Address { City = "Castle Douglas", Country = "UK" } };
       if (customer is { Address.City: "Castle Douglas" }) {
         Console.WriteLine("This customer lives around the corner");
       }

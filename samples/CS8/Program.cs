@@ -1,8 +1,9 @@
-﻿namespace CS8 {
+﻿// ReSharper disable All
+
+namespace CS8 {
   class Program {
     // This is a "switch expression"
-    static int CalcResult(int input) => input switch
-    {
+    static int CalcResult(int input) => input switch {
       1 => 2,
       2 => 3,
       _ => throw new ArgumentException("Rien ne va plus")
@@ -33,10 +34,7 @@
         Console.WriteLine($"Found Oli, his last name is {olisLastName}.");
 
       // Nested property patterns:
-      var customer = new Customer
-      {
-        Address = new Address { City = "Castle Douglas", Country = "UK" }
-      };
+      var customer = new Customer { Address = new Address { City = "Castle Douglas", Country = "UK" } };
       if (customer is { Address: { City: "Castle Douglas" } }) {
         Console.WriteLine("This customer lives around the corner");
       }

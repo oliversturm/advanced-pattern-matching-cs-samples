@@ -1,4 +1,6 @@
-﻿namespace CS7 {
+﻿// ReSharper disable All
+
+namespace CS7 {
   public class DeadPerson {
     public string Name { get; init; } = "";
     public virtual bool IsAlive => false;
@@ -34,6 +36,5 @@
 
       Console.WriteLine("My heartfelt apologies in case anybody finds my zombie sample offensive.");
     }
-
   }
 }

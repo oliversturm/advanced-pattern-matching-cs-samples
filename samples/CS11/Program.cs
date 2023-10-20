@@ -1,4 +1,6 @@
-﻿namespace CS11 {
+﻿// ReSharper disable All
+
+namespace CS11 {
   class Program {
     static void Main(string[] args) {
       int[] numbers = { 1, 3, 42 };
@@ -40,8 +42,7 @@
     }
 
     // Now we're talking
-    static int Sum(int[] l) => l switch
-    {
+    static int Sum(int[] l) => l switch {
       [] => 0,
       [var x, .. var xs] => x + Sum(xs)
     };
