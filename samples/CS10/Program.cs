@@ -15,7 +15,11 @@ namespace CS10 {
 
     static void Main(string[] args) {
       // Nested property patterns, now shorter:
-      var customer = new Customer { Address = new Address { City = "Castle Douglas", Country = "UK" } };
+      var customer = new Customer {
+        Address = new Address {
+          City = "Castle Douglas", Country = "UK"
+        }
+      };
       if (customer is { Address.City: "Castle Douglas" }) {
         Console.WriteLine("This customer lives around the corner");
       }
