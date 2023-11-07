@@ -28,8 +28,10 @@ namespace CS8 {
       var (firstName, lastName) = personInfo;
       // firstName ist jetzt "Oli" und lastName ist "Sturm"
 
-      // Positional pattern (using a tuple - hence "tuple pattern" in this special case)
-      // Important: this works with any deconstructable type! Example coming up in CS9 sample.
+      // Positional pattern (using a tuple - hence "tuple pattern" in
+      // this particular case)
+      // Important: this works with any deconstructable type! Example
+      // for a class with a deconstructor included in CS9 sample.
       if (personInfo is ("Oli", var olisLastName))
         Console.WriteLine($"Found Oli, his last name is {olisLastName}.");
 
@@ -37,6 +39,18 @@ namespace CS8 {
       var customer = new Customer { Address = new Address { City = "Castle Douglas", Country = "UK" } };
       if (customer is { Address: { City: "Castle Douglas" } }) {
         Console.WriteLine("This customer lives around the corner");
+      }
+
+      // Prize question: what is the point of this?
+      if (customer is { } c) {
+        // Work with c -- it is not null and matches the (empty, but
+        //   extensible) property pattern.
+        // c is a copy of the object reference, which may be useful in multi-
+        //   threading scenarios.
+        // Some people really like this pattern, but in most cases
+        // if (customer is not null) { ... } is just a good.
+        // (And btw, "is not null" is not really faster than "!= null" -- but
+        //   it could be, and it expresses intention more explicitly.
       }
     }
   }
