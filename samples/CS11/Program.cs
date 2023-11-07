@@ -21,17 +21,7 @@ namespace CS11 {
       // ... and this is false
       Console.WriteLine($"numbers is [1,3,>100]: {numbers is [1, 3, > 100]}");
 
-
-      // Docs at https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/patterns#list-patterns
-      // show an example with CSV import -- cool idea, but of course
-      // the CSV content is always a list of strings so advanced
-      // patterns can't be used for non-string content.
-
-      // What the docs don't tell you (at least I didn't see it
-      // anywhere -- found it in GitHub), you can split head and tail
-      // On second read, I found this:
-      // "The var pattern can capture a single element, or a range of elements."
-      // I imagine that somebody thought this would be sufficient.
+      // You can split a list into head and tail:
       if (numbers is [var x, .. var xs]) {
         Console.WriteLine($"Head: {x}");
         Console.WriteLine($"Tail: {xs}");
@@ -39,10 +29,22 @@ namespace CS11 {
 
       // So we can do nice functional-style stuff:
       Console.WriteLine($"Sum of numbers: {Sum(numbers)}");
+
+      // Talking about spans -- the second new pattern matching feature in
+      // C# 11 is related to spans and strings.
+
+      string WhatsNext(ReadOnlySpan<char> spanString) => spanString switch {
+        "one" => "two",
+        "two" => "three",
+        _ => "That's it!"
+      };
+
+      Console.WriteLine($"One. Next: '{WhatsNext("one".AsSpan())}'");
     }
 
-    // Now we're talking
-    static int Sum(int[] l) => l switch {
+    // Now we're talking -- note that the use of Span<T> magically solves
+    // a perf problem you would have if you used an Array type here.
+    static int Sum(Span<int> l) => l switch {
       [] => 0,
       [var x, .. var xs] => x + Sum(xs)
     };
