@@ -31,7 +31,7 @@ namespace CS9 {
       NotValuable
     }
 
-    // Positional patterns with placeholders - note that
+    // Positional patterns with "discard" placeholders - note that
     //   the element lists must be "complete"!
     static OrderValue OrderValueCategory(Order o) =>
       o switch {
