@@ -35,7 +35,9 @@ namespace CS9 {
     //   the element lists must be "complete"!
     static OrderValue OrderValueCategory(Order o) =>
       o switch {
-        (< 0, _) => throw new ArgumentException("Positive itemCounts please!"),
+        // Labels are optional here but can be useful
+        // for readability
+        (itemCount: < 0, itemPrice: _) => throw new ArgumentException("Positive itemCounts please!"),
         (_, < 0) => throw new ArgumentException("Positive itemPrices please!"),
         (>= 100, _) => OrderValue.ValuableDueToHighCount,
         (_, >= 1000) => OrderValue.ValuableDueToHighItemPrice,
