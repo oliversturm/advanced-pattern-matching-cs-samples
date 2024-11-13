@@ -3,7 +3,8 @@
 namespace CS8 {
   class Program {
     // This is a "switch expression"
-    static int CalcResult(int input) => input switch {
+    static int CalcResult(int input) => input switch
+    {
       1 => 2,
       2 => 3,
       _ => throw new ArgumentException("Rien ne va plus")
@@ -42,15 +43,21 @@ namespace CS8 {
       }
 
       // Prize question: what is the point of this?
-      if (customer is { } c) {
-        // Work with c -- it is not null and matches the (empty, but
+      if (customer.Address is { } a) {
+        // Work with a -- it is not null and matches the (empty, but
         //   extensible) property pattern.
-        // c is a copy of the object reference, which may be useful in multi-
+        // a is a copy of the object reference, which may be useful in multi-
         //   threading scenarios.
         // Some people really like this pattern, but in most cases
-        // if (customer is not null) { ... } is just a good.
+        // if (customer.Address is not null) { ... } is just a good.
         // (And btw, "is not null" is not really faster than "!= null" -- but
         //   it could be, and it expresses intention more explicitly.
+
+        // Perhaps best answer: it's like a "with" statement, allowing
+        // short access to the property path now. And note: a is not
+        // an empty object here, it's the same type as the source
+        // at customer.Address.
+        Console.WriteLine($"Address.City is {a.City}");
       }
     }
   }
