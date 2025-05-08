@@ -12,3 +12,4 @@ let rec listLength l =
 let rec listLength' = function
     | [] -> 0
     | _ :: xs -> 1 + (listLength' xs)
+

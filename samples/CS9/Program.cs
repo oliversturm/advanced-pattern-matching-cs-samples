@@ -34,10 +34,11 @@ namespace CS9 {
     // Positional patterns with "discard" placeholders - note that
     //   the element lists must be "complete"!
     static OrderValue OrderValueCategory(Order o) =>
-      o switch {
+      o switch
+      {
         // Labels are optional here but can be useful
         // for readability
-        (itemCount: < 0, itemPrice: _) => throw new ArgumentException("Positive itemCounts please!"),
+        Order (itemCount: < 0, itemPrice: _) => throw new ArgumentException("Positive itemCounts please!"),
         (_, < 0) => throw new ArgumentException("Positive itemPrices please!"),
         (>= 100, _) => OrderValue.ValuableDueToHighCount,
         (_, >= 1000) => OrderValue.ValuableDueToHighItemPrice,
@@ -47,7 +48,6 @@ namespace CS9 {
 
         _ => OrderValue.NotValuable
       };
-
 
     static void Main(string[] args) {
     }
