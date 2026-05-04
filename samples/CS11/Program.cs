@@ -2,9 +2,12 @@
 
 using System.Text.Json;
 
-namespace CS11 {
-  class Program {
-    static void Main(string[] args) {
+namespace CS11
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
       int[] numbers = { 1, 3, 42 };
       // The following match expressions are "slice patterns" - rather unintuitive naming in my eyes, but what can we do.
       // Exact match
@@ -28,18 +31,21 @@ namespace CS11 {
       // The .. operator can be used in the middle as well. It can also match a zero-length part of the list.
       int[] moreNumbers = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
       Console.WriteLine(
-        $"moreNumbers is [<= 50, <= 50, .., > 50, >= 100]: {moreNumbers is [<= 50, <= 50, .., > 50, >= 100]}");
-      Console.WriteLine(
-        $"numbers is [1, 3, .., 42]: {numbers is [1, 3, .., 42]}");
+        $"moreNumbers is [<= 50, <= 50, .., > 50, >= 100]: {moreNumbers is [<= 50, <= 50, .., > 50, >= 100]}"
+      );
+      Console.WriteLine($"numbers is [1, 3, .., 42]: {numbers is [1, 3, .., 42]}");
       // Note that .. can be used only once. This is invalid.
       // Console.WriteLine(
       //   $"moreNumbers is [<= 50, <= 50, .., > 50, >= 100]: {moreNumbers is [.., <= 50, <= 50, .., > 50, >= 100]}");
 
       // And one more strange combination:
-      Console.WriteLine($$"""numbers is [1, .. { Length: 2 }]: {{numbers is [1, .. { Length: 2 }]}}""");
+      Console.WriteLine(
+        $$"""numbers is [1, .. { Length: 2 }]: {{numbers is [1, .. { Length: 2 }]}}"""
+      );
 
       // You can split a list into head and tail:
-      if (numbers is [var x, .. var xs]) {
+      if (numbers is [var x, .. var xs])
+      {
         Console.WriteLine($"Head: {x}");
         Console.WriteLine($"Tail: {xs}");
       }
@@ -50,12 +56,13 @@ namespace CS11 {
       // Talking about spans -- the second new pattern matching feature in
       // C# 11 is related to spans and strings.
 
-      string WhatsNext(ReadOnlySpan<char> spanString) => spanString switch
-      {
-        "one" => "two",
-        "two" => "three",
-        _ => "That's it!"
-      };
+      string WhatsNext(ReadOnlySpan<char> spanString) =>
+        spanString switch
+        {
+          "one" => "two",
+          "two" => "three",
+          _ => "That's it!",
+        };
 
       Console.WriteLine($"One. Next: '{WhatsNext("one".AsSpan())}'");
 
@@ -65,7 +72,7 @@ namespace CS11 {
       //----------------------------------------------
       //----------------------------------------------
 
-      //return;
+      return;
 
       #region FP stuff for the second part of the demo
 
@@ -73,20 +80,27 @@ namespace CS11 {
       List<double> values = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0];
       Console.WriteLine($"Downsampled: {JsonSerializer.Serialize(Downsample(values))}");
 
-      List<List<int>> m1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-      Console.WriteLine($"Transpose: {JsonSerializer.Serialize(Transpose(m1))}");
-      Console.WriteLine($"Transpose: {JsonSerializer.Serialize(Transpose_(m1))}");
+      List<List<int>> m1 =
+      [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ];
+      Console.WriteLine($"Transpose  : {JsonSerializer.Serialize(Transpose(m1))}");
+      Console.WriteLine($"Transpose_ : {JsonSerializer.Serialize(Transpose_(m1))}");
+      Console.WriteLine($"Transpose__: {JsonSerializer.Serialize(Transpose__(m1))}");
 
       #endregion
     }
 
     // Now we're talking -- note that the use of Span<T> magically solves
     // a perf problem you would have if you used an Array type here.
-    static int Sum(Span<int> l) => l switch
-    {
-      [] => 0,
-      [var x, .. var xs] => x + Sum(xs)
-    };
+    static int Sum(Span<int> l) =>
+      l switch
+      {
+        [] => 0,
+        [var x, .. var xs] => x + Sum(xs),
+      };
 
     #region FP stuff for the second part of the demo
 
@@ -97,11 +111,12 @@ namespace CS11 {
     //   | h1::h2::t -> 0.5 * (h1 + h2) :: downsample t
     //   | [_] -> invalid_arg "downsample"
 
-    static List<double> Downsample(List<double> values) => values switch
-    {
-      [var x1, var x2, .. var xs] => new List<double> { (x1 + x2) / 2 }.Concat(Downsample(xs)).ToList(),
-      _ => []
-    };
+    static List<double> Downsample(List<double> values) =>
+      values switch
+      {
+        [var x1, var x2, .. var xs] => [(x1 + x2) / 2, .. Downsample(xs)],
+        _ => [],
+      };
 
     // From F#
     // let rec transpose = function
@@ -109,31 +124,49 @@ namespace CS11 {
     //     List.map List.head xss :: transpose (List.map List.tail xss)
     //   | _ -> []
 
-    static List<List<int>> Transpose(List<List<int>> s) => s switch
-    {
-      [[_, .. _], .. _] =>
-        new List<List<int>> { s.Select(x => x.First()).ToList() }
-          .Concat<List<int>>(
-            Transpose(
-              s.Select(x => x.Skip(1).ToList()).ToList()
-            )).ToList(),
-      _ => []
-    };
+    static List<List<int>> Transpose(List<List<int>> s) =>
+      s switch
+      {
+        [[_, ..], ..] => new List<List<int>> { s.Select(x => x.First()).ToList() }
+          .Concat<List<int>>(Transpose(s.Select(x => x.Skip(1).ToList()).ToList()))
+          .ToList(),
+        _ => [],
+      };
 
-    // Construction helpers:
+    // C# collection expressions and spread operators are surprisingly powerful,
+    // but the syntax can end up a bit complex.
+    // [ .. exp ] works for exp:IEnumerable<T> and is shorter than .ToList()
+    // We still need the Select function from LINQ
+    // Target typing means that the expression may only be accepted by the compiler
+    //   once it is complete and correct.
 
-    static List<R> Map<T, R>(Func<T, R> f, List<T> l) => l.Select(f).ToList();
+    static List<List<int>> Transpose_(List<List<int>> s) =>
+      s switch
+      {
+        [[_, ..], ..] =>
+        [
+          [.. s.Select(x => x[0])],
+          .. Transpose_([.. s.Select(x => x[1..])]),
+        ],
+        _ => [],
+      };
+
+    // Construction helpers can result in an implementation closer to the original
+
+    static List<R> Map<T, R>(Func<T, R> f, List<T> l) => [.. l.Select(f)];
+
     static T Head<T>(List<T> l) => l[0];
-    static List<T> Tail<T>(List<T> l) => l.Skip(1).ToList();
-    static List<T> Cons<T>(T head, List<T> tail) => new List<T> { head }.Concat(tail).ToList();
 
-    // Much closer now!
+    static List<T> Tail<T>(List<T> l) => l[1..];
 
-    static List<List<int>> Transpose_(List<List<int>> s) => s switch
-    {
-      [[_, .. _], .. _] => Cons(Map(Head, s), Transpose_(Map(Tail, s))),
-      _ => []
-    };
+    static List<T> Cons<T>(T head, List<T> tail) => [head, .. tail];
+
+    static List<List<int>> Transpose__(List<List<int>> s) =>
+      s switch
+      {
+        [[_, ..], ..] => Cons(Map(Head, s), Transpose__(Map(Tail, s))),
+        _ => [],
+      };
 
     #endregion
   }
